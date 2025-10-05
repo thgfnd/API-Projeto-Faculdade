@@ -25,6 +25,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+
         <!-- Spring Boot Web para criar API REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -1,4 +1,4 @@
-package controle.request;
+package com.thiago.controle.request;
 
 public class VeiculoRequest {
     public String modelo;

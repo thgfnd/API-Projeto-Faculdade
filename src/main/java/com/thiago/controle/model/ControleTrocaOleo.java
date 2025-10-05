@@ -1,4 +1,4 @@
-package controle.model;
+package com.thiago.controle.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
@@ -26,14 +26,6 @@ public class ControleTrocaOleo {
         this.intervaloMeses = intervaloMeses;
     }
 
-    // Verifica se já passou do prazo ou da quilometragem
-    public boolean precisaTrocar(int kmAtual) {
-        int kmExcedente = kmAtual - (kmUltimaTroca + intervaloKm);
-        long mesesExcedentes = ChronoUnit.MONTHS.between(dataUltimaTroca, LocalDate.now()) - intervaloMeses;
-        return kmExcedente > 0 || mesesExcedentes > 0;
-    }
-
-    // Retorna status formatado
     public String statusTroca(int kmAtual) {
         StringBuilder sb = new StringBuilder();
         int kmExcedente = kmAtual - (kmUltimaTroca + intervaloKm);
@@ -52,8 +44,8 @@ public class ControleTrocaOleo {
     }
 
     public void registrarTroca(int kmAtual) {
-        kmUltimaTroca = kmAtual;
-        dataUltimaTroca = LocalDate.now();
+        this.kmUltimaTroca = kmAtual;
+        this.dataUltimaTroca = LocalDate.now();
     }
 
     // Getters
@@ -62,4 +54,13 @@ public class ControleTrocaOleo {
     public int getIntervaloKm() { return intervaloKm; }
     public LocalDate getDataUltimaTroca() { return dataUltimaTroca; }
     public int getIntervaloMeses() { return intervaloMeses; }
+
+    // Setters
+    public void setIntervaloKm(int intervaloKm) {
+        this.intervaloKm = intervaloKm;
+    }
+
+    public void setIntervaloMeses(int intervaloMeses) {
+        this.intervaloMeses = intervaloMeses;
+    }
 }
