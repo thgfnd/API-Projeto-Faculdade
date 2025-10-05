@@ -1,58 +1,125 @@
-# 🚗 Controle de Veículos - Projeto Acadêmico (Em Desenvolvimento)
+Controle de Veículos - API e Frontend
+Este é um projeto full-stack de uma aplicação para controle de veículos, desenvolvido como um projeto de faculdade. A aplicação permite o gerenciamento de uma frota de veículos, com controle de quilometragem e agendamento de troca de óleo, separando o acesso entre perfis de Administrador e Cliente.
 
-Este projeto faz parte das atividades da disciplina de **Análise e Desenvolvimento de Sistemas**.  
-O objetivo é desenvolver uma API em **Spring Boot** para gerenciar veículos e controlar a necessidade de troca de óleo com base na quilometragem.
+✨ Funcionalidades
+O sistema é dividido em dois painéis principais com diferentes níveis de acesso:
 
-⚠️ Projeto **em desenvolvimento** — novas funcionalidades estão sendo implementadas.
+Painel do Administrador (ROLE_ADMIN)
+Login Seguro: Acesso via autenticação.
 
----
+Dashboard Completo: Visualização de todos os veículos cadastrados no sistema.
 
-## 🎯 Objetivos do Projeto
-- Praticar conceitos de **Programação Orientada a Objetos (POO)** em Java.  
-- Desenvolver uma aplicação **RESTful API** utilizando Spring Boot.  
-- Trabalhar com **operações CRUD** (Create, Read, Update, Delete).  
-- Implementar regras de negócio relacionadas à **manutenção de veículos**.  
+Gerenciamento de Usuários: Visualização de todos os usuários cadastrados (clientes e admins).
 
----
+Cadastro de Veículos: Capacidade de adicionar um novo veículo e atribuí-lo a qualquer cliente existente.
 
-## 🚀 Como rodar o projeto
-```bash
-git clone https://github.com/thgfnd/controle-veiculos.git
-cd controle-veiculos
+CRUD de Veículos:
+
+Editar: Alterar as informações de qualquer veículo (placa, modelo, ano, quilometragem).
+
+Excluir: Remover um veículo do sistema.
+
+Painel do Cliente (ROLE_CLIENTE)
+Login Seguro: Acesso via autenticação.
+
+Dashboard Pessoal: Visualização de apenas os veículos que lhe pertencem.
+
+Autocadastro de Veículo: Capacidade de adicionar um novo veículo, que é automaticamente vinculado à sua conta.
+
+Gerenciamento da Manutenção:
+
+Visualizar o status da troca de óleo.
+
+Registrar uma nova troca de óleo.
+
+Atualizar a quilometragem atual do veículo.
+
+Editar os intervalos de troca (por KM e por meses).
+
+🛠️ Tecnologias Utilizadas
+Backend
+Java 21
+
+Spring Boot 3.2.0
+
+Spring Security: Para autenticação e autorização baseada em papéis (roles).
+
+Spring Data JPA (Hibernate): Para persistência de dados e comunicação com o banco.
+
+MySQL: Banco de dados relacional para armazenamento dos dados.
+
+Maven: Gerenciador de dependências.
+
+Frontend
+HTML5
+
+CSS3
+
+JavaScript (ES6+): Manipulação do DOM e comunicação com a API via Fetch.
+
+Arquitetura Multi-Page: Páginas separadas para Login, Painel do Admin e Painel do Cliente.
+
+🚀 Como Executar o Projeto
+Siga os passos abaixo para configurar e executar a aplicação em um ambiente de desenvolvimento.
+
+Pré-requisitos
+JDK 21 (ou superior) instalado.
+
+Maven instalado.
+
+MySQL Server instalado e em execução.
+
+Git instalado.
+
+1. Configuração do Banco de Dados
+   Certifique-se de que seu servidor MySQL está rodando.
+
+Crie um novo banco de dados (schema) chamado controle_veiculos.
+
+SQL
+
+CREATE DATABASE controle_veiculos;
+As tabelas (carros, usuarios, controles_oleo) serão criadas automaticamente pelo Hibernate na primeira vez que a aplicação for iniciada, graças à configuração spring.jpa.hibernate.ddl-auto=create.
+
+2. Configuração do Backend
+   Clone o repositório para sua máquina local:
+
+Bash
+
+git clone https://github.com/thgfnd/API-Projeto-Faculdade.git
+Navegue até a pasta do projeto backend:
+
+Bash
+
+cd API-Projeto-Faculdade/Projeto Controle API
+Verifique o arquivo src/main/resources/application.properties e, se necessário, altere o spring.datasource.username e spring.datasource.password para corresponder às suas credenciais do MySQL.
+
+Execute a aplicação usando o Maven:
+
+Bash
+
 mvn spring-boot:run
-A aplicação sobe em: http://localhost:8080
+O backend estará rodando em http://localhost:8080.
 
-📌 Endpoints principais
-GET /veiculos → Lista todos os veículos
+3. Acessando a Aplicação
+   Abra seu navegador de internet.
 
-GET /veiculos/{id} → Busca veículo por ID
+Navegue para http://localhost:8080.
 
-POST /veiculos → Registra novo veículo
+A página de login será exibida.
 
-PUT /veiculos/{id} → Atualiza informações do veículo
+Usuários de Teste
+Dois usuários são criados automaticamente na primeira inicialização (DataLoader.java):
 
-DELETE /veiculos/{id} → Remove veículo
+Administrador:
 
-POST /veiculos/{id}/troca-oleo → Informa a quilometragem atual e verifica se precisa trocar o óleo
+Login: admin@email.com
 
-📖 Exemplo de JSON
-json
-Copiar código
-{
-  "modelo": "Civic",
-  "quilometragem": 12000,
-  "controleTrocaOleo": {
-    "kmTroca": 15000
-  }
-}
-📅 Roadmap (em progresso)
+Senha: admin
 
- CRUD de veículos
+Cliente:
 
- Controle de troca de óleo
+Login: cliente@email.com
 
- Persistência em banco de dados
+Senha: cliente
 
-📝 Observação
-Este é um projeto acadêmico desenvolvido com fins de aprendizado.
-O código poderá ser expandido e otimizado em versões futuras.
