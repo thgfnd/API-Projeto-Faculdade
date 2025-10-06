@@ -31,7 +31,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // 1. Libera o acesso aos arquivos públicos do frontend
-                        .requestMatchers("/", "/index.html", "/style.css", "/app.js", "/admin.js", "/cliente.js").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/*.html",
+                                "/css/**",
+                                "/app.js",
+                                "/admin.js",
+                                "/cliente.js",
+                                "/fundo-oficina.jpg" // Permite a imagem na raiz
+                        ).permitAll()
 
                         // 2. Libera endpoints compartilhados para QUALQUER usuário logado (Admin ou Cliente)
                         .requestMatchers(
