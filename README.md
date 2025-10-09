@@ -123,3 +123,22 @@ Login: cliente@email.com
 
 Senha: cliente
 
+### Tela login  
+<img width="939" height="917" alt="login" src="https://github.com/user-attachments/assets/8d1b4559-0957-47da-8865-b367382fb397" />
+
+### Tela admin
+<img width="938" height="914" alt="tela-admin" src="https://github.com/user-attachments/assets/47a6fd04-d17a-40ad-a249-459712b16188" />
+
+### Tela cliente
+<img width="867" height="905" alt="tela-cliente" src="https://github.com/user-attachments/assets/8c72c479-bf2c-4e66-af7b-89f01c8266ee" />
+
+### Subtela cliente
+<img width="742" height="853" alt="subtela-cliente" src="https://github.com/user-attachments/assets/416a7688-def1-441a-bad9-37d053ac94b1" />
+
+### Subtela admin
+<img width="880" height="908" alt="subtela-admin" src="https://github.com/user-attachments/assets/8cadbbef-d377-4922-960d-7fd9cc774cfc" />
+
+
+
+
+
