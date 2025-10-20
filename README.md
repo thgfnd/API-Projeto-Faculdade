@@ -123,8 +123,12 @@ Login: cliente@email.com
 
 Senha: cliente
 
+## Tela de cadastro
+<img width="890" height="765" alt="tela-cadastro" src="https://github.com/user-attachments/assets/ddd77899-a3bf-403a-9b8a-6a3e7949615d" />
+
+
 ### Tela login  
-<img width="939" height="917" alt="login" src="https://github.com/user-attachments/assets/8d1b4559-0957-47da-8865-b367382fb397" />
+<img width="885" height="798" alt="tela-login" src="https://github.com/user-attachments/assets/260d3696-e4e7-4b9c-bd05-abdc7ed39052" />
 
 ### Tela admin
 <img width="938" height="914" alt="tela-admin" src="https://github.com/user-attachments/assets/47a6fd04-d17a-40ad-a249-459712b16188" />
