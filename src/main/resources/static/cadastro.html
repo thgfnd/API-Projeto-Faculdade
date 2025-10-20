@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Controle de Veículos</title>
+    <link rel="stylesheet" href="/css/login.css"> </head>
+<div class="login-container" style="height: auto; padding: 40px;">
+    <form id="cadastro-form">
+        <div class="input-group">
+            <input type="text" id="nome" placeholder="NOME COMPLETO" required>
+        </div>
+
+        <div class="input-group">
+            <input type="tel" id="cpf" placeholder="CPF (11 dígitos, apenas números)" required minlength="11" maxlength="11">
+        </div>
+
+        <div class="input-group">
+            <input type="tel" id="celular" placeholder="CELULAR (10 ou 11 dígitos, com DDD)" required minlength="10" maxlength="11">
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder="E-MAIL" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="senha" placeholder="SENHA" required>
+        </div>
+        <div class="input-group">
+            <input type="password" id="confirmarSenha" placeholder="CONFIRMAR SENHA" required>
+        </div>
+        <button type="submit">CADASTRAR</button>
+        <p id="error-message" style="color: #ff4500; text-align: center; margin-top: 10px;"></p>
+        <p style="text-align: center; margin-top: 20px;">
+            Já tem uma conta? <a href="/" style="color: #f0f0f0; text-decoration: none;">Faça o login</a>
+        </p>
+    </form>
+</div>
+<script src="/cadastro.js"></script>
+</body>
+</html>
