@@ -38,7 +38,10 @@ public class SecurityConfig {
                                 "/app.js",
                                 "/admin.js",
                                 "/cliente.js",
-                                "/fundo-oficina.jpg" // Permite a imagem na raiz
+                                "/fundo-oficina.jpg",// Permite a imagem na raiz
+                                "/cadastro.html",
+                                "/cadastro.js",
+                                "/api/usuarios/registrar"
                         ).permitAll()
 
                         // 2. Libera endpoints compartilhados para QUALQUER usuário logado (Admin ou Cliente)

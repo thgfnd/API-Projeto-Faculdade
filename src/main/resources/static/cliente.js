@@ -17,10 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchClientData() {
         try {
-            const userResponse = await fetch('/api/user/me');
+            const userResponse = await fetch('/api/usuarios/me'); // Rota correta para buscar dados do usuário logado
             if (userResponse.ok) { const user = await userResponse.json(); welcomeMessage.textContent = `Bem-vindo, ${user.nome}!`; }
+
             const vehiclesResponse = await fetch('/api/veiculos/meus-veiculos');
             if (!vehiclesResponse.ok) { if (vehiclesResponse.status === 401 || vehiclesResponse.status === 403) window.location.href = '/'; return; }
+
             const vehicles = await vehiclesResponse.json();
             vehicleList.innerHTML = '';
             vehicles.forEach(vehicle => {
@@ -46,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             intervaloKm: parseInt(document.getElementById('intervaloKm-cliente').value),
             intervaloMeses: parseInt(document.getElementById('intervaloMeses-cliente').value)
         };
+
         try {
             const response = await fetch('/api/veiculos/meus-veiculos', {
                 method: 'POST',
@@ -56,10 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Seu veículo foi adicionado com sucesso!');
                 addMyVehicleForm.reset();
                 fetchClientData();
-            } else { alert('Falha ao adicionar seu veículo.'); }
-        } catch (error) { console.error('Erro ao adicionar veículo:', error); }
+            } else {
+                const errorText = await response.text();
+                alert(`Falha ao adicionar seu veículo: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar veículo:', error);
+        }
     });
 
+    // O RESTANTE DO ARQUIVO CONTINUA IGUAL...
     vehicleList.addEventListener('click', async (e) => {
         if (e.target.classList.contains('details-btn')) {
             currentVehicleId = e.target.dataset.id;

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchAndPopulateUsers() {
         try {
+            // Assumindo que a rota /api/usuarios lista todos os usuários (necessário no UsuarioController)
             const response = await fetch('/api/usuarios');
             if (!response.ok) { console.error('Falha ao carregar usuários.'); return; }
             const users = await response.json();
@@ -42,6 +43,42 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) { console.error('Erro ao buscar veículos:', error); }
     }
 
+    addForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const carroData = {
+            placa: document.getElementById('placa').value,
+            modelo: document.getElementById('modelo').value,
+            ano: parseInt(document.getElementById('ano').value),
+            quilometragem: parseInt(document.getElementById('quilometragem').value),
+            dataUltimaTroca: document.getElementById('dataUltimaTroca').value,
+            kmUltimaTroca: parseInt(document.getElementById('kmUltimaTroca').value),
+            intervaloKm: parseInt(document.getElementById('intervaloKm').value),
+            intervaloMeses: parseInt(document.getElementById('intervaloMeses').value)
+        };
+        const usuarioId = usuarioSelect.value;
+        if (!usuarioId) { alert('Selecione o dono.'); return; }
+
+        try {
+            const response = await fetch(`/api/veiculos?usuarioId=${usuarioId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(carroData)
+            });
+            if (response.ok) {
+                alert('Veículo adicionado!');
+                addForm.reset();
+                usuarioSelect.selectedIndex = 0;
+                fetchAllVehicles();
+            } else {
+                const errorText = await response.text();
+                alert(`Falha ao adicionar: ${errorText}`);
+            }
+        } catch (error) {
+            console.error('Erro ao adicionar:', error);
+        }
+    });
+
+    // O RESTANTE DO ARQUIVO CONTINUA IGUAL...
     vehicleList.addEventListener('click', async (e) => {
         const vehicleId = e.target.dataset.id;
         if (!vehicleId) return;
@@ -92,35 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     editCancelBtn.addEventListener('click', () => { editModal.style.display = 'none'; });
-
-    addForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const carroData = {
-            placa: document.getElementById('placa').value,
-            modelo: document.getElementById('modelo').value,
-            ano: parseInt(document.getElementById('ano').value),
-            quilometragem: parseInt(document.getElementById('quilometragem').value),
-            dataUltimaTroca: document.getElementById('dataUltimaTroca').value,
-            kmUltimaTroca: parseInt(document.getElementById('kmUltimaTroca').value),
-            intervaloKm: parseInt(document.getElementById('intervaloKm').value),
-            intervaloMeses: parseInt(document.getElementById('intervaloMeses').value)
-        };
-        const usuarioId = usuarioSelect.value;
-        if (!usuarioId) { alert('Selecione o dono.'); return; }
-        try {
-            const response = await fetch(`/api/veiculos?usuarioId=${usuarioId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(carroData)
-            });
-            if (response.ok) {
-                alert('Veículo adicionado!');
-                addForm.reset();
-                usuarioSelect.selectedIndex = 0;
-                fetchAllVehicles();
-            } else { alert('Falha ao adicionar.'); }
-        } catch (error) { console.error('Erro ao adicionar:', error); }
-    });
 
     logoutBtn.addEventListener('click', () => { document.getElementById('logout-form').submit(); });
 

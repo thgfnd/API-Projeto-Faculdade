@@ -11,4 +11,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     // Método para buscar um usuário pelo email
     Optional<Usuario> findByEmail(String email);
+
+    // método para buscar por cpf
+
+    Optional<Usuario> findByCpf(String cpf);
 }
