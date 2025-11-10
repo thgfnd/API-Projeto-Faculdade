@@ -106,7 +106,7 @@ public class VerificacaoEmailService {
                                 "É crucial realizar a troca para garantir a saúde do motor do seu veículo.\n\n" +
                                 "Por favor, entre em contato conosco para agendar sua manutenção o mais rápido possível.\n\n" +
                                 "Atenciosamente,\n" +
-                                "Sua Oficina da kakau",
+                                "Sua Oficina",
                         nomeCliente, carro.getModelo(), carro.getPlaca(), motivoVencimento
                 );
 
