@@ -16,6 +16,7 @@ public class ControleTrocaOleo {
     private int kmUltimaTroca;
     private int intervaloKm;
     private int intervaloMeses;
+    private boolean notificacaoMesVencidoEnviada = false;
 
     public ControleTrocaOleo() {}
 
@@ -24,6 +25,7 @@ public class ControleTrocaOleo {
         this.intervaloKm = intervaloKm;
         this.dataUltimaTroca = dataUltimaTroca;
         this.intervaloMeses = intervaloMeses;
+        this.notificacaoMesVencidoEnviada = false; // Garantir que começa como falso
     }
 
     public String statusTroca(int kmAtual) {
@@ -46,6 +48,7 @@ public class ControleTrocaOleo {
     public void registrarTroca(int kmAtual) {
         this.kmUltimaTroca = kmAtual;
         this.dataUltimaTroca = LocalDate.now();
+        this.notificacaoMesVencidoEnviada = false; // <-- IMPORTANTE: Resetar a flag!
     }
 
     // Getters
@@ -54,6 +57,7 @@ public class ControleTrocaOleo {
     public int getIntervaloKm() { return intervaloKm; }
     public LocalDate getDataUltimaTroca() { return dataUltimaTroca; }
     public int getIntervaloMeses() { return intervaloMeses; }
+    public boolean isNotificacaoMesVencidoEnviada() {return notificacaoMesVencidoEnviada;}
 
     // Setters
     public void setIntervaloKm(int intervaloKm) {
@@ -62,5 +66,9 @@ public class ControleTrocaOleo {
 
     public void setIntervaloMeses(int intervaloMeses) {
         this.intervaloMeses = intervaloMeses;
+    }
+
+    public void setNotificacaoMesVencidoEnviada(boolean notificacaoMesVencidoEnviada) {
+        this.notificacaoMesVencidoEnviada = notificacaoMesVencidoEnviada;
     }
 }

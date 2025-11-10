@@ -3,9 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const vehicleList = document.getElementById('client-vehicle-list');
     const logoutBtn = document.getElementById('logout-btn');
     const addMyVehicleForm = document.getElementById('add-my-vehicle-form');
+
+    // --- Referências do Modal ---
     const detailsModal = document.getElementById('details-modal');
     const detailsTitle = document.getElementById('details-title');
     const detailsOilStatus = document.getElementById('details-oil-status');
+    const detailsVehicleSection = document.getElementById('details-vehicle'); // <-- REFERÊNCIA ADICIONADA
+
     const editIntervaloKm = document.getElementById('edit-intervalo-km');
     const editIntervaloMeses = document.getElementById('edit-intervalo-meses');
     const saveIntervalsBtn = document.getElementById('save-intervals-btn');
@@ -17,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchClientData() {
         try {
-            const userResponse = await fetch('/api/usuarios/me'); // Rota correta para buscar dados do usuário logado
+            const userResponse = await fetch('/api/usuarios/me');
             if (userResponse.ok) { const user = await userResponse.json(); welcomeMessage.textContent = `Bem-vindo, ${user.nome}!`; }
 
             const vehiclesResponse = await fetch('/api/veiculos/meus-veiculos');
@@ -68,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // O RESTANTE DO ARQUIVO CONTINUA IGUAL...
+
     vehicleList.addEventListener('click', async (e) => {
         if (e.target.classList.contains('details-btn')) {
             currentVehicleId = e.target.dataset.id;
@@ -76,12 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const carResponse = await fetch(`/api/veiculos/${currentVehicleId}`);
                 const statusResponse = await fetch(`/api/veiculos/${currentVehicleId}/status-oleo`);
+
                 if (carResponse.ok && statusResponse.ok) {
                     const vehicle = await carResponse.json();
                     const statusText = await statusResponse.text();
+
+                    // --- LÓGICA DE PREENCHIMENTO ADICIONADA ---
+                    detailsVehicleSection.innerHTML = `
+                        <p><strong>Placa:</strong> ${vehicle.placa}</p>
+                        <p><strong>Modelo:</strong> ${vehicle.modelo}</p>
+                        <p><strong>Ano:</strong> ${vehicle.ano}</p>
+                        <p><strong>KM Atual:</strong> ${vehicle.quilometragem} km</p>
+                    `;
+                    // --- FIM DA LÓGICA ADICIONADA ---
+
                     detailsOilStatus.textContent = statusText;
-                    editIntervaloKm.value = vehicle.controleTrocaOleo.intervaloKm;
-                    editIntervaloMeses.value = vehicle.controleTrocaOleo.intervaloMeses;
+
+                    if (vehicle.controleTrocaOleo) {
+                        editIntervaloKm.value = vehicle.controleTrocaOleo.intervaloKm;
+                        editIntervaloMeses.value = vehicle.controleTrocaOleo.intervaloMeses;
+                    }
+
                     detailsModal.style.display = 'block';
                 } else {
                     alert('Não foi possível carregar os detalhes do veículo.');

@@ -14,29 +14,14 @@
         <button id="logout-btn" style="width: 150px;">Sair</button>
     </div>
 
-    <div class="form-container">
-        <h2>Adicionar Novo Veículo</h2>
-        <form id="add-vehicle-form">
-            <select id="usuario-select" required>
-                <option value="" disabled selected>Selecione o Dono do Veículo</option>
-            </select>
-            <input type="text" id="placa" placeholder="Placa do Veículo" required>
-            <input type="text" id="modelo" placeholder="Modelo do Veículo" required>
-            <input type="number" id="ano" placeholder="Ano" required>
-            <input type="number" id="quilometragem" placeholder="Quilometragem Atual" required>
-            <fieldset>
-                <legend>Dados da Última Troca de Óleo</legend>
-                <input type="date" id="dataUltimaTroca" required>
-                <input type="number" id="kmUltimaTroca" placeholder="KM da Última Troca" required>
-                <input type="number" id="intervaloKm" placeholder="Intervalo de KM para Troca" required>
-                <input type="number" id="intervaloMeses" placeholder="Intervalo de Meses para Troca" required>
-            </fieldset>
-            <button type="submit">Adicionar Veículo</button>
-        </form>
-    </div>
     <div class="list-container">
         <h2>Todos os Veículos</h2>
-        <ul id="vehicle-list"></ul>
+
+        <div class="search-container">
+            <input type="text" id="search-cpf" placeholder="Buscar por CPF do proprietário...">
+        </div>
+        <div id="vehicle-card-container" class="card-container">
+        </div>
     </div>
 </div>
 
@@ -55,6 +40,24 @@
         <button type="submit">Salvar Alterações</button>
         <button type="button" id="edit-cancel-btn">Cancelar</button>
     </form>
+</div>
+
+<div id="details-modal" class="details-container" style="display:none;">
+    <h2 id="details-title">Detalhes do Veículo</h2>
+
+    <h3>Proprietário</h3>
+    <div class="details-section" id="details-owner">
+    </div>
+
+    <h3>Veículo</h3>
+    <div class="details-section" id="details-vehicle">
+    </div>
+
+    <h3>Controle de Óleo</h3>
+    <div class="details-section" id="details-oil">
+    </div>
+    <hr>
+    <button type="button" id="details-cancel-btn">Fechar</button>
 </div>
 
 <form id="logout-form" action="/logout" method="post" style="display: none;"></form>

@@ -23,9 +23,14 @@
             <input type="number" id="quilometragem-cliente" placeholder="Quilometragem Atual" required>
             <fieldset>
                 <legend>Dados da Última Troca de Óleo</legend>
-                <input type="date" id="dataUltimaTroca-cliente" required>
-                <input type="number" id="kmUltimaTroca-cliente" placeholder="KM da Última Troca" required>
-                <input type="number" id="intervaloKm-cliente" placeholder="Intervalo de KM para Troca" required>
+                <input type="text"
+                       placeholder="Data da Última Troca"
+                       onfocus="(this.type='date')"
+                       onblur="(this.type='text')"
+                       id="dataUltimaTroca-cliente"
+                       required>
+                <input type="number" id="kmUltimaTroca-cliente" placeholder="Km da Última Troca" required>
+                <input type="number" id="intervaloKm-cliente" placeholder="Intervalo de Km para Troca" required>
                 <input type="number" id="intervaloMeses-cliente" placeholder="Intervalo de Meses para Troca" required>
             </fieldset>
             <button type="submit">Adicionar Veículo</button>
@@ -40,6 +45,10 @@
 
 <div id="details-modal" class="details-container" style="display:none;">
     <h2 id="details-title"></h2>
+
+    <h3>Detalhes do Veículo</h3>
+    <div class="details-section" id="details-vehicle">
+    </div>
     <h3>Status do Óleo</h3>
     <pre id="details-oil-status"></pre>
     <hr>

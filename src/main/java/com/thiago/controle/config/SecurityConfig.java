@@ -39,6 +39,7 @@ public class SecurityConfig {
                                 "/admin.js",
                                 "/cliente.js",
                                 "/fundo-oficina.jpg",// Permite a imagem na raiz
+                                "/fundo-admin.png",
                                 "/cadastro.html",
                                 "/cadastro.js",
                                 "/api/usuarios/registrar"

@@ -1,5 +1,11 @@
 package com.thiago.controle.service;
 
+// --- IMPORTS ADICIONADOS ---
+import com.thiago.controle.dto.CarroResponseDTO;
+import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional; // Importante
+// --- FIM DOS IMPORTS ---
+
 import com.thiago.controle.model.Carro;
 import com.thiago.controle.model.ControleTrocaOleo;
 import com.thiago.controle.model.Usuario;
@@ -20,13 +26,26 @@ public class GerenciadorVeiculos {
     private final CarroRepository carroRepository;
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
-    public GerenciadorVeiculos(CarroRepository carroRepository, UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    // O seu construtor está correto
+    public GerenciadorVeiculos(CarroRepository carroRepository,
+                               UsuarioRepository usuarioRepository,
+                               PasswordEncoder passwordEncoder,
+                               EmailService emailService) {
         this.carroRepository = carroRepository;
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
+    public Usuario getUsuarioPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o email: " + email));
+    }
+
+
+    // ... (registrarNovoUsuario, criarCarroAPartirDoRequest, adicionarVeiculo, adicionarVeiculoParaCliente, etc. continuam iguais) ...
     public Usuario registrarNovoUsuario(UsuarioRequest request) {
         if (usuarioRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new RuntimeException("Este e-mail já está em uso.");
@@ -34,27 +53,24 @@ public class GerenciadorVeiculos {
         if (usuarioRepository.findByCpf(request.getCpf()).isPresent()) {
             throw new RuntimeException("Este CPF já está cadastrado.");
         }
-
-        // Remove tudo que não for dígito do CPF para a validação
+        if (request.getSenha() == null || request.getSenha().length() < 5) {
+            throw new RuntimeException("A senha deve ter no mínimo 5 caracteres.");
+        }
         String cpfApenasNumeros = request.getCpf().replaceAll("[^0-9]", "");
         if (cpfApenasNumeros.length() != 11) {
             throw new RuntimeException("CPF inválido. Deve conter exatamente 11 dígitos.");
         }
-
-        // Remove tudo que não for dígito do Celular para a validação
         String celularApenasNumeros = request.getCelular().replaceAll("[^0-9]", "");
         if (celularApenasNumeros.length() < 10 || celularApenasNumeros.length() > 11) {
             throw new RuntimeException("Celular inválido. Deve conter 10 ou 11 dígitos (DDD + Número).");
         }
-
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(request.getNome());
         novoUsuario.setCpf(request.getCpf());
         novoUsuario.setCelular(request.getCelular());
         novoUsuario.setEmail(request.getEmail());
         novoUsuario.setSenha(passwordEncoder.encode(request.getSenha()));
-        novoUsuario.setPermissao("ROLE_CLIENTE"); // <-- Define o padrão como cliente
-
+        novoUsuario.setPermissao("ROLE_CLIENTE");
         return usuarioRepository.save(novoUsuario);
     }
 
@@ -76,27 +92,23 @@ public class GerenciadorVeiculos {
     }
 
     public Carro adicionarVeiculo(CarroRequest request, Long usuarioId) {
-        // Validação de placa
-        if (carroRepository.findByPlaca(request.getPlaca()).isPresent()) {
-            throw new RuntimeException("Já existe um veículo cadastrado com esta placa.");
-        }
         Carro carro = criarCarroAPartirDoRequest(request);
         Usuario dono = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário dono não encontrado"));
         carro.setUsuario(dono);
-        return carroRepository.save(carro);
+        Carro carroSalvo = carroRepository.save(carro);
+        emailService.enviarEmailConfirmacaoNovoVeiculo(dono, carroSalvo);
+        return carroSalvo;
     }
 
     public Carro adicionarVeiculoParaCliente(CarroRequest request, String emailUsuario) {
-        // Validaçao de placa
-        if (carroRepository.findByPlaca(request.getPlaca()).isPresent()) {
-            throw new RuntimeException("Já existe um veículo cadastrado com esta placa.");
-        }
         Carro carro = criarCarroAPartirDoRequest(request);
         Usuario dono = usuarioRepository.findByEmail(emailUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuário logado não encontrado"));
         carro.setUsuario(dono);
-        return carroRepository.save(carro);
+        Carro carroSalvo = carroRepository.save(carro);
+        emailService.enviarEmailConfirmacaoNovoVeiculo(dono, carroSalvo);
+        return carroSalvo;
     }
 
     private Carro getCarroByIdAndVerifyOwner(int carroId, String userEmail) {
@@ -147,8 +159,13 @@ public class GerenciadorVeiculos {
         return carroRepository.save(carroExistente);
     }
 
-    public List<Carro> getVeiculos() {
-        return carroRepository.findAll();
+    // --- MÉTODO MODIFICADO ---
+    @Transactional(readOnly = true) // Garante que a sessão fica aberta para o getUsuario()
+    public List<CarroResponseDTO> getVeiculos() {
+        return carroRepository.findAll()
+                .stream()
+                .map(CarroResponseDTO::new) // Conversão de DTO acontece aqui
+                .collect(Collectors.toList());
     }
 
     public Carro buscarPorId(int id) {
@@ -159,10 +176,16 @@ public class GerenciadorVeiculos {
         carroRepository.deleteById(id);
     }
 
-    public List<Carro> getVeiculosPorEmailUsuario(String email) {
+    // --- MÉTODO MODIFICADO ---
+    @Transactional(readOnly = true) // Garante que a sessão fica aberta para o getUsuario()
+    public List<CarroResponseDTO> getVeiculosPorEmailUsuario(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com o email: " + email));
-        return carroRepository.findByUsuarioId(usuario.getId());
+
+        return carroRepository.findByUsuarioId(usuario.getId())
+                .stream()
+                .map(CarroResponseDTO::new) // Conversão de DTO acontece aqui
+                .collect(Collectors.toList());
     }
 
     public List<Usuario> getUsuarios() {
