@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailsModal = document.getElementById('details-modal');
     const detailsTitle = document.getElementById('details-title');
     const detailsOilStatus = document.getElementById('details-oil-status');
-    const detailsVehicleSection = document.getElementById('details-vehicle'); // <-- REFERÊNCIA ADICIONADA
+    const detailsVehicleSection = document.getElementById('details-vehicle');
 
     const editIntervaloKm = document.getElementById('edit-intervalo-km');
     const editIntervaloMeses = document.getElementById('edit-intervalo-meses');
@@ -29,14 +29,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const vehicles = await vehiclesResponse.json();
             vehicleList.innerHTML = '';
+
+            // --- BLOCO MODIFICADO ---
             vehicles.forEach(vehicle => {
+                // Lógica de status (copiada do admin.js)
+                let statusClass = 'status-em-dia';
+                let statusText = 'Em Dia';
+                if (vehicle.statusOleo && vehicle.statusOleo.includes('⚠️')) {
+                    statusClass = 'status-pendente';
+                    statusText = 'Pendente';
+                }
+
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span>${vehicle.modelo} (${vehicle.ano}) - Placa: ${vehicle.placa}</span>
-                    <button class="details-btn" data-id="${vehicle.id}" data-title="${vehicle.modelo} (${vehicle.placa})">Ver Detalhes</button>
+                    <div class="vehicle-info">
+                        <span>${vehicle.modelo} (${vehicle.ano}) - Placa: ${vehicle.placa}</span>
+                        <span class="status-tag ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="vehicle-actions">
+                        <button class="details-btn" data-id="${vehicle.id}" data-title="${vehicle.modelo} (${vehicle.placa})">Ver Detalhes</button>
+                    </div>
                 `;
                 vehicleList.appendChild(li);
             });
+            // --- FIM DO BLOCO MODIFICADO ---
+
         } catch (error) { console.error('Erro ao buscar dados do cliente:', error); }
     }
 

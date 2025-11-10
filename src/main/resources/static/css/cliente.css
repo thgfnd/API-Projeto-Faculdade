@@ -41,11 +41,56 @@ button {
 }
 button:hover { background-color: #0056b3; transform: none; box-shadow: none; }
 #client-vehicle-list { list-style-type: none; padding: 0; }
+
+/* --- SEÇÃO MODIFICADA --- */
 #client-vehicle-list li {
     background: rgba(0, 0, 0, 0.2); padding: 15px; border: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px; border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebra de linha em telas pequenas */
 }
 #client-vehicle-list li button { width: auto; padding: 8px 15px; margin: 0 5px; font-size: 14px; text-transform: none; }
+
+/* NOVO: Div para a informação (Nome, Placa, Status) - MOVIDO PARA FORA DO @media */
+.vehicle-info {
+    display: flex;
+    flex-direction: column; /* Coloca o status abaixo do nome/placa */
+    gap: 5px;
+}
+
+/* NOVO: Div para o botão - MOVIDO PARA FORA DO @media */
+.vehicle-actions {
+    margin-left: 15px; /* Espaço entre o texto e o botão */
+}
+
+/* ====================================
+   STATUS TAGS - MOVIDO PARA FORA DO @media
+   ==================================== */
+.status-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 5px; /* Ajustado para a lista */
+}
+
+.status-em-dia {
+    background-color: #155724; /* Fundo verde escuro */
+    color: #d4edda; /* Texto verde claro */
+    border: 1px solid #28a745;
+}
+
+.status-pendente {
+    background-color: #721c24; /* Fundo vermelho escuro */
+    color: #f8d7da; /* Texto vermelho claro */
+    border: 1px solid #dc3545;
+}
+/* --- FIM DAS SEÇÕES MOVIDAS --- */
+
 
 /* --- CORREÇÃO APLICADA AQUI --- */
 .details-container {
@@ -62,3 +107,52 @@ button:hover { background-color: #0056b3; transform: none; box-shadow: none; }
 
 fieldset { border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
 legend { color: #00bfff; font-weight: bold; padding: 0 10px; text-shadow: 0 0 5px #00bfff; }
+
+
+/* --- NOVO BLOCO: Design Responsivo para Telas Pequenas --- */
+/* Estas regras aplicam-se a qualquer ecrã com 600px de largura ou menos */
+@media (max-width: 600px) {
+
+    body {
+        padding: 10px; /* Menos padding no corpo em ecrãs pequenos */
+    }
+
+    .container {
+        padding: 20px 15px; /* Menos padding lateral no container principal */
+        margin: 10px auto;
+    }
+
+    h1 { font-size: 1.6rem; } /* Fonte um pouco menor */
+    h2 { font-size: 1.3rem; } /* Fonte um pouco menor */
+
+    .details-container {
+        /* O modal ocupa mais ecrã e tem menos padding interno */
+        width: 95%;
+        padding: 20px; /* Menos padding interno (antes era 25px) */
+    }
+
+    /* * Diminui a fonte que aumentámos, mas SÓ em ecrãs pequenos,
+     * para o conteúdo caber melhor.
+    */
+    .details-section p,
+    #details-oil-status {
+        font-size: 16px;
+    }
+
+   /* Ajusta a lista de veículos para ecrãs pequenos */
+   #client-vehicle-list li {
+       flex-direction: column; /* Coloca os botões abaixo do nome */
+       align-items: flex-start;
+       gap: 10px;
+   }
+
+   .vehicle-actions {
+       margin-left: 0; /* Remove a margem em telas pequenas */
+       width: 100%;
+   }
+
+   #client-vehicle-list li button {
+       width: 100%; /* Faz os botões ocuparem a largura total */
+       margin: 5px 0 0 0;
+   }
+}
