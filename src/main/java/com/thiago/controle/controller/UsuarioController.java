@@ -30,10 +30,11 @@ public class UsuarioController {
         }
     }
 
-    // Endpoint que já existia no VeiculoController, movido para cá para melhor organização
+
+    // ... (antes estava o código com .getVeiculosPorEmailUsuario) ...
     @GetMapping("/me")
     public Usuario getUsuarioLogado(Principal principal) {
-        // Supondo que você tenha um método no service para buscar por email
-        return gerenciador.getVeiculosPorEmailUsuario(principal.getName()).get(0).getUsuario();
+        // Agora ele busca o usuário diretamente pelo e-mail (que é o principal.getName())
+        return gerenciador.getUsuarioPorEmail(principal.getName());
     }
 }

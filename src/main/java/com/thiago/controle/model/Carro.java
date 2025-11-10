@@ -16,7 +16,7 @@ public class Carro {
     private Usuario usuario;
     // ---------------------------------------------------
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String placa;
 
     @Column(nullable = false)
@@ -70,4 +70,6 @@ public class Carro {
             controleTrocaOleo.registrarTroca(quilometragem);
         }
     }
+
+
 }
